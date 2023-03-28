@@ -50,12 +50,10 @@ def api_topten():
         elif data not in service_list:
             raise HTTPException("Data specified in topten does not exist", 404)
         # Use the FlixPatrolScraper to get the top ten movies for the specified data
-        top_ten_movies = []
         with FlixPatrolScraper(service_list) as scraper:
             list_name = data.replace("-", " ")
             movie_list = scraper.scrape_top_ten_movies(data)
             print(f"Top 10 movies for {data}: {movie_list}")
-            top_ten_movies.append(movie_list)
         
         # Log the successful API call
         logger.info(f"Successful API call: /api/topten?data={data}&token={token}")
@@ -66,7 +64,7 @@ def api_topten():
             "content": {
                 "name": f"{list_name} topten",
                 "url": "https://flixpatrol.com/top10",
-                "playlist": top_ten_movies
+                "playlist": movie_list
             }
         })
     except HTTPException as e:
