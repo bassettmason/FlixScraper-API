@@ -1,2 +1,9 @@
 2023-03-28 00:51:55,703 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
 2023-03-28 00:52:26,254 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-28 02:04:35,636 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-28 02:38:53,233 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-28 02:40:58,486 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-28 02:43:02,775 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-28 02:45:07,936 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-28 02:47:12,844 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-28 02:49:17,343 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
