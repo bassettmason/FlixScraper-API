@@ -19,15 +19,9 @@ Copy code
 
 pip install -r requirements.txt
 
-javascript
-Copy code
-
 3. Set the `TOKEN` environment variable to your secret token:
 
 export TOKEN=your-secret-token
-
-markdown
-Copy code
 
 4. Run the server:
 
