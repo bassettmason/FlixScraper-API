@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>API Documentation</title>
+  </head>
+  <body>
+    <header>
+      <h1>API Documentation</h1>
+      <p>This API provides access to the top ten movies in various streaming services using the FlixPatrolScraper.</p>
+    </header>
+    <main>
+      <section>
+        <h2>Endpoints</h2>
+        <ul>
+          <li><strong>GET /api/topten</strong>: returns the top ten movies for a specified streaming service.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Parameters</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>data</td>
+              <td>The name of the streaming service for which to retrieve the top ten movies.</td>
+              <td>string</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>token</td>
+              <td>A secret token that must be provided with the request.</td>
+              <td>string</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Endpoint + Parameters Example</h2>
+        <p> Current available services list is "netflix", "amazon-prime", "hbo", "hulu", "disney", "paramount-plus"
+        <p>https://movielist-api.bassettmason.repl.co/api/topten?data={service}&token={token}</p>
+        <p>https://movielist-api.bassettmason.repl.co/api/topten?data=netflix&token=password12345</p>
+      </section>
+      <section>
+        <h2>Responses</h2>
+        <p>Here is an example of the response JSON object:</p>
+<pre>
+{
+    "content": {
+        "name": "netflix topten",
+        "playlist": [
+            [
+                {
+                    "title": "Luther: The Fallen Sun",
+                    "year": "null"
+                },
+                {
+                    "title": "The Magician's Elephant",
+                    "year": "null"
+                },
+                {
+                    "title": "Chor Nikal Ke Bhaga",
+                    "year": "null"
+                },
+                {
+                    "title": "Johnny",
+                    "year": "null"
+                },
+                {
+                    "title": "Still Time",
+                    "year": "null"
+                },
+                {
+                    "title": "Furies",
+                    "year": "null"
+                },
+                {
+                    "title": "All Quiet on the Western Front",
+                    "year": "null"
+                },
+                {
+                    "title": "In His Shadow",
+                    "year": "null"
+                },
+                {
+                    "title": "Perfume: The Story of a Murderer",
+                    "year": "null"
+                },
+                {
+                    "title": "PAW Patrol: The Movie",
+                    "year": "null"
+                }
+            ]
+        ],
+        "url": "https://flixpatrol.com/top10"
+    },
+    "timestamp": "2023-03-27 21:07:57",
+    "type": "netflix_topten"
+}
+</pre>
+        <p>The API returns JSON objects with the following structure:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Description</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td>The type of response, which is "netflix_topten".</td>
+      <td>string</td>
+    </tr>
+    <tr>
+      <td>timestamp</td>
+      <td>The date and time at which the request was processed, which is "2023-03-27 21:07:57".</td>
+      <td>string</td>
+    </tr>
+    <tr>
+      <td>content</td>
+      <td>An object containing the name of the Netflix top ten list, a playlist of movies and their information, and the URL of the list.</td>
+      <td>object</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The "content" object has the following structure:</p>
+
+<ul>
+  <li>"name": The name of the Netflix top ten list, which is "netflix topten".</li>
+  <li>"playlist": An array containing one sub-array of objects, where each object represents a movie and contains its title and year.</li>
+  <li>"url": The URL of the source.</li>
+</ul>
+          
+</body>
+
+</html>
