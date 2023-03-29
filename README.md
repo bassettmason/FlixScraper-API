@@ -1,40 +1,17 @@
 Sure, here's a sample README file that includes a quick start guide and some information about the code:
 
-css
-Copy code
-# Automated Top Ten Movie Playlists API
+# Movie Genie API
 
-This Flask-based API was designed to help automate playlists for movie suggestions in Trakt, but it can be used for any software that would like automated top ten lists of the top streaming services out right now.
+This Flask-based API was designed to help automate playlists for movie suggestions in Trakt, but it can be used for any software that would like automated playlists of the top streaming services or online suggested playlists from reddit.
 
-## Quick Start
+## Top-Ten
 
-1. Clone the repository:
-
-git clone https://github.com/your-username/top-ten-movie-playlists-api.git
-
-markdown
-Copy code
-
-2. Install the required dependencies:
-
-pip install -r requirements.txt
-
-3. Set the `TOKEN` environment variable to your secret token:
-
-export TOKEN=your-secret-token
-
-4. Run the server:
-
-python app.py
-
-javascript
-Copy code
-
-5. Send a GET request to the `/api/topten` endpoint with the `data` and `token` parameters. For example:
+Send a GET request to the `/api/topten` endpoint with the `data` and `token` parameters. For example:
 Current available services list is "netflix", "amazon-prime", "hbo", "hulu", "disney", "paramount-plus
 
-http://localhost:8000/api/topten?data=netflix&token=your-secret-token
-
+example:
+api/topten?data=netflix&token=password12345
+services to request: "netflix", "amazon-prime", "hbo", "hulu", "disney", "paramount-plus"
 This will return a JSON response with the top ten movies for Netflix.
 {
     "content": {
@@ -87,4 +64,52 @@ This will return a JSON response with the top ten movies for Netflix.
     },
     "timestamp": "2023-03-27 21:07:57",
     "type": "netflix_topten"
+}
+
+## Genie
+
+This route uses AI to collect movies suggestions from Reddit posts.
+Send a GET request to the `/api/genie` endpoint with the `data` and `token` parameters. For example:
+
+example:
+api/topten?data={reddit url}&token=password12345
+services to request: just url from reddit moviesuggestions have been tested.
+This will return a JSON response with the movies suggested from url.
+{
+    "content": {
+        "name": "movie_set_in_beautiful_historic_or_strange_places",
+        "playlist": [
+            {
+                "title": "The Fall",
+                "year": 2005
+            },
+            {
+                "title": "Call Me By Your Name",
+                "year": 2017
+            },
+            {
+                "title": "The Grand Budapest Hotel",
+                "year": "null"
+            },
+            {
+                "title": "In Bruges",
+                "year": 2008
+            },
+            {
+                "title": "The Handmaiden",
+                "year": "null"
+            },
+            {
+                "title": "Power of the Dog",
+                "year": "null"
+            },
+            {
+                "title": "First Cow",
+                "year": "null"
+            }
+        ],
+        "url": "https://www.reddit.com/r/MovieSuggestions/comments/125srxi/movie_set_in_beautiful_historic_or_strange_places/"
+    },
+    "timestamp": "2023-03-29 19:58:22",
+    "type": "genie"
 }

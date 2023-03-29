@@ -30,3 +30,68 @@
 2023-03-28 23:10:43,755 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
 2023-03-28 23:10:54,003 - INFO - Successful API call: /api/topten?data=disney&token=password12345
 2023-03-28 23:11:05,207 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
+2023-03-28 23:37:38,280 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-28 23:37:51,298 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-28 23:38:03,113 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-28 23:38:14,342 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-28 23:38:26,535 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-28 23:38:38,897 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
+2023-03-29 02:09:05,476 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 02:09:56,566 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 02:10:02,120 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-29 02:10:08,267 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-29 02:10:13,209 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-29 02:10:19,195 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-29 02:10:24,542 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
+2023-03-29 02:11:27,826 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 03:00:07,250 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 03:00:12,268 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-29 03:00:18,740 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-29 03:00:24,120 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-29 03:00:29,448 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-29 03:00:34,165 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
+2023-03-29 04:29:07,199 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 04:29:13,922 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-29 04:29:26,002 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-29 04:29:39,238 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-29 04:29:51,039 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-29 17:44:09,899 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 19:07:11,417 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 19:07:11,417 - ERROR - Server error: module 'datetime' has no attribute 'now'
+2023-03-29 19:08:27,473 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 19:10:12,045 - ERROR - Server error: Expecting value: line 1 column 1 (char 0)
+2023-03-29 19:17:01,788 - ERROR - Server error: The server had an error while processing your request. Sorry about that!
+2023-03-29 19:18:13,023 - ERROR - Server error: Expecting value: line 1 column 1 (char 0)
+2023-03-29 19:21:04,167 - ERROR - Server error: Expecting value: line 1 column 1 (char 0)
+2023-03-29 19:24:04,296 - ERROR - Server error: Expecting value: line 1 column 1 (char 0)
+2023-03-29 19:27:57,849 - ERROR - Server error: Expecting value: line 1 column 1 (char 0)
+2023-03-29 19:32:54,591 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 19:47:58,339 - INFO - Successfully retrieved comments from url: https://www.reddit.com/r/MovieSuggestions/comments/125srxi/movie_set_in_beautiful_historic_or_strange_places/
+2023-03-29 19:48:02,787 - INFO - Successfully extracted titles from comments
+2023-03-29 19:48:48,026 - INFO - Successfully retrieved comments from url: https://www.reddit.com/r/MovieSuggestions/comments/125srxi/movie_set_in_beautiful_historic_or_strange_places/
+2023-03-29 19:48:51,467 - INFO - Successfully extracted titles from comments
+2023-03-29 19:54:31,273 - DEBUG - get_comments united string: The Fall (2005)
+Call Me By Your Name (2017)
+The Grand Budapest Hotel
+In Bruges (2008)
+The Handmaiden is up your alley, then
+Also, Power of the Dog and First Cow
+
+2023-03-29 19:54:36,414 - DEBUG - extract_titles result: [{"title": "The Fall", "year": 2005}, {"title": "Call Me By Your Name", "year": 2017}, {"title": "The Grand Budapest Hotel", "year": "null"}, {"title": "In Bruges", "year": 2008}, {"title": "The Handmaiden", "year": "null"}, {"title": "Power of the Dog", "year": "null"}, {"title": "First Cow", "year": "null"}]
+2023-03-29 19:54:36,414 - DEBUG - extract_titles result_dictified: [{'title': 'The Fall', 'year': 2005}, {'title': 'Call Me By Your Name', 'year': 2017}, {'title': 'The Grand Budapest Hotel', 'year': 'null'}, {'title': 'In Bruges', 'year': 2008}, {'title': 'The Handmaiden', 'year': 'null'}, {'title': 'Power of the Dog', 'year': 'null'}, {'title': 'First Cow', 'year': 'null'}]
+2023-03-29 19:58:18,803 - DEBUG - get_comments united string: The Fall (2005)
+Call Me By Your Name (2017)
+The Grand Budapest Hotel
+In Bruges (2008)
+The Handmaiden is up your alley, then
+Also, Power of the Dog and First Cow
+
+2023-03-29 19:58:22,799 - DEBUG - extract_titles result: [{"title": "The Fall", "year": 2005}, {"title": "Call Me By Your Name", "year": 2017}, {"title": "The Grand Budapest Hotel", "year": "null"}, {"title": "In Bruges", "year": 2008}, {"title": "The Handmaiden", "year": "null"}, {"title": "Power of the Dog", "year": "null"}, {"title": "First Cow", "year": "null"}]
+2023-03-29 19:58:22,799 - DEBUG - extract_titles result_dictified: [{'title': 'The Fall', 'year': 2005}, {'title': 'Call Me By Your Name', 'year': 2017}, {'title': 'The Grand Budapest Hotel', 'year': 'null'}, {'title': 'In Bruges', 'year': 2008}, {'title': 'The Handmaiden', 'year': 'null'}, {'title': 'Power of the Dog', 'year': 'null'}, {'title': 'First Cow', 'year': 'null'}]
+2023-03-29 19:58:34,721 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 20:21:35,905 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-03-29 20:21:53,638 - INFO - Successful API call: /api/topten?data=amazon-prime&token=password12345
+2023-03-29 20:22:08,595 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
+2023-03-29 20:22:24,016 - INFO - Successful API call: /api/topten?data=hulu&token=password12345
+2023-03-29 20:22:37,067 - INFO - Successful API call: /api/topten?data=disney&token=password12345
+2023-03-29 20:22:50,607 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345

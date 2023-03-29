@@ -5,6 +5,8 @@ import os
 from datetime import datetime
 from webscraper import FlixPatrolScraper, service_list
 import logging
+from genie import is_valid_reddit_url, extract_titles, get_comments, extract_title 
+from utils import get_timestamp
 
 # Get the secret token from environment variables
 my_secret = os.environ['TOKEN']
@@ -27,12 +29,54 @@ logger.addHandler(file_handler)
 @app.route("/")
 def index():
     return redirect(url_for('docs'))
-# Define a route for the documentation page
+# Route for the documentation page
 @app.route("/docs")
 def docs():
     return render_template("docs.html")
-    
-# Define a route for the /api/topten endpoint
+#Route for the /api/genie page
+@app.route("/api/genie", methods=["GET"])
+def api_genie():
+    try:
+        data = request.args.get("data")
+        token = request.args.get("token")
+        
+        if token != my_secret:
+            raise HTTPException("Invalid token", 401)
+        if data is None:
+            raise HTTPException("No data requested", 400)
+        if is_valid_reddit_url(data):
+            playlist = extract_titles(get_comments(data))
+        return {
+            "type": "genie",
+            "timestamp": get_timestamp(),
+            "content": {
+                "name": extract_title(data),
+                "url": data,
+                "playlist": playlist
+            }
+        }
+    except HTTPException as e:
+        # Log the error with the appropriate level (INFO for 404 errors, ERROR for others)
+        if e.code == 404:
+            logger.info(f"API error: {e.description}")
+        else:
+            logger.error(f"API error: {e.description}")
+        # Return the error message as JSON with the appropriate status code
+        return jsonify({
+            "type": "Error",
+            "timestamp": get_timestamp(),
+            "content": e.description
+        }), e.code
+    except Exception as e:
+        # Log the server error with the ERROR level
+        logger.error(f"Server error: {str(e)}")
+        # Return a generic server error message as JSON with a 500 status
+        return jsonify({
+            "type": "Error",
+            "timestamp": get_timestamp(),
+            "content": str(e)
+        }), 500
+# Route for the /api/topten endpoint
 @app.route("/api/topten", methods=["GET"])
 def api_topten():
     try:
@@ -52,15 +96,13 @@ def api_topten():
         # Use the FlixPatrolScraper to get the top ten movies for the specified data
         with FlixPatrolScraper(service_list) as scraper:
             list_name = data.replace("-", " ")
-            movie_list = scraper.scrape_top_ten_movies(data)
-            print(f"Top 10 movies for {data}: {movie_list}")
-        
+            movie_list = scraper.scrape_top_ten_movies(data)      
         # Log the successful API call
         logger.info(f"Successful API call: /api/topten?data={data}&token={token}")
         # Return the top ten movies as JSON
         return jsonify({
             "type": f"{data}_topten",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "timestamp": get_timestamp(),
             "content": {
                 "name": f"{list_name} topten",
                 "url": "https://flixpatrol.com/top10",
