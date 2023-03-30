@@ -13,7 +13,7 @@ my_secret = os.environ['TOKEN']
 
 # Create a Flask app object
 app = Flask("app")
-
+app.hits = 0
 # Create a logger object with the desired settings
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.DEBUG)
@@ -24,6 +24,11 @@ file_handler = logging.FileHandler(log_file)
 file_handler.setFormatter(log_format)
 # Add the file handler to the logger
 logger.addHandler(file_handler)
+
+# counts hits
+@app.before_request
+def increment_hit_count():
+    app.hits += 1
 
 # Define a route for the root URL that redirects to the documentation
 @app.route("/")
@@ -101,7 +106,7 @@ def api_topten():
         logger.info(f"Successful API call: /api/topten?data={data}&token={token}")
         # Return the top ten movies as JSON
         return jsonify({
-            "type": f"{data}_topten",
+            "type": "topten",
             "timestamp": get_timestamp(),
             "content": {
                 "name": f"{list_name} topten",

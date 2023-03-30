@@ -89,7 +89,7 @@ def extract_titles(comments: str) -> List[Dict[str, str]]:
         result_dictified = json.loads(result)
         logger.debug(f"extract_titles result_dictified: {result_dictified}")
         return result_dictified
-    except openai.Error as e:
+    except Exception as e:
         logger.error(f"OpenAI Error: {e}")
         return []
 
