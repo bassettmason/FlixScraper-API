@@ -42,21 +42,21 @@ def docs():
 @app.route("/api/genie", methods=["GET"])
 def api_genie():
     try:
-        data = request.args.get("data")
+        url = request.args.get("url")
         token = request.args.get("token")
         
         if token != my_secret:
             raise HTTPException("Invalid token", 401)
-        if data is None:
+        if url is None:
             raise HTTPException("No data requested", 400)
-        if is_valid_reddit_url(data):
-            playlist = extract_titles(get_comments(data))
+        if is_valid_reddit_url(url):
+            playlist = extract_titles(get_comments(url))
         return {
             "type": "genie",
             "timestamp": get_timestamp(),
             "content": {
-                "name": extract_title(data),
-                "url": data,
+                "name": extract_title(url),
+                "url": url,
                 "playlist": playlist
             }
         }

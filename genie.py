@@ -72,6 +72,7 @@ def extract_titles(comments: str) -> List[Dict[str, str]]:
     """
     Extract movie titles from the comments using OpenAI's GPT-3 API.
     """
+    print(f" comments:{comments}")
     try:
         response = openai.Completion.create(
             engine="text-davinci-003",
@@ -84,10 +85,14 @@ def extract_titles(comments: str) -> List[Dict[str, str]]:
         )
 
         # Extract the recognized entities from the API response
-        result = response["choices"][0]["text"].strip().replace("Answer: ", "")
+        result = response["choices"][0]["text"].strip().replace("Answer: ", "").replace("'title'", '"title"').replace("\'title\"", "title").replace("title", '"title"').replace('""', '"')
+        print(f"result: {result}")
         logger.debug(f"extract_titles result: {result}")
+        print(1)
         result_dictified = json.loads(result)
+        print(2)
         logger.debug(f"extract_titles result_dictified: {result_dictified}")
+        print(3)
         return result_dictified
     except Exception as e:
         logger.error(f"OpenAI Error: {e}")
@@ -100,7 +105,16 @@ def extract_title(url: str) -> str:
     """
     match = re.search("/r/(.*)/comments/([^/]+)/(.*)/?$", url)
     if match:
-        return match.group(3).rstrip("/")
+        url_name = match.group(3).rstrip("/")
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f'''can you make the below into a better cleaner title under 40 char long with spaces instead of _
+            {url_name}''',
+            max_tokens=1024,
+            n=1,
+            stop=None,
+            temperature=0,)
+        return response["choices"][0]["text"].strip()
     else:
         return ""
 
