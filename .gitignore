@@ -1,0 +1,22 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environment files
+venv/
+env/
+
+# Logs
+*.log
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Local configuration files
+config.ini
+local_settings.py
+
+# IDE-specific files
+

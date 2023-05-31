@@ -270,3 +270,4 @@ I'm surprised u haven't seen cyber punk edge runners yet
 2023-03-31 05:26:13,615 - INFO - Successful API call: /api/topten?data=paramount-plus&token=password12345
 2023-03-31 11:00:12,009 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
 2023-04-01 11:00:12,174 - INFO - Successful API call: /api/topten?data=netflix&token=password12345
+2023-04-01 23:17:21,951 - INFO - Successful API call: /api/topten?data=hbo&token=password12345
