@@ -1,5 +1,6 @@
 { pkgs }: {
   deps = [
+    pkgs.postgresql
     pkgs.python38Full
     pkgs.mailutils
     pkgs.replitPackages.prybar-python310

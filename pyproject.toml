@@ -6,13 +6,19 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-flask = "^1.1.2"
-werkzeug = "^1.0.1"
 praw = "^7.6.1"
-openai = "^0.26.4"
 selenium = "^4.8.2"
 beautifulsoup4 = "^4.11.2"
 bs4 = "^0.0.1"
+schemas = "^0.7.1"
+uvicorn = "^0.21.1"
+crud = "^0.1"
+fastapi = "^0.95.0"
+psycopg2 = "2.9.6"
+psycopg2-binary = "*"
+SQLAlchemy = "^2.0.9"
+httpx = "^0.24.0"
+sentry-sdk = "^1.20.0"
 
 [tool.poetry.dev-dependencies]
 

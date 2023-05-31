@@ -1,142 +1,98 @@
-# Import necessary modules
-from flask import Flask, request, render_template, jsonify, redirect, url_for
-from werkzeug.exceptions import HTTPException
-import os
-from datetime import datetime
-from webscraper import FlixPatrolScraper, service_list
+import uvicorn
+from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+import crud, schemas
+from database import SessionLocal
+from sqlalchemy.exc import SQLAlchemyError
+import webscraper
+from typing import List
+from exception_handlers import sqlalchemy_exception_handler
 import logging
-from genie import is_valid_reddit_url, extract_titles, get_comments, extract_title 
-from utils import get_timestamp
+import sentry_sdk
+from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+from sentry_sdk.integrations.logging import LoggingIntegration
 
-# Get the secret token from environment variables
-my_secret = os.environ['TOKEN']
 
-# Create a Flask app object
-app = Flask("app")
-app.hits = 0
-# Create a logger object with the desired settings
-logger = logging.getLogger("my_logger")
-logger.setLevel(logging.DEBUG)
-log_file = "api.log"
-log_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-# Create a file handler and set the formatter
-file_handler = logging.FileHandler(log_file)
-file_handler.setFormatter(log_format)
-# Add the file handler to the logger
-logger.addHandler(file_handler)
+# Configure logging and Sentry
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
-# counts hits
-@app.before_request
-def increment_hit_count():
-    app.hits += 1
+sentry_logging = LoggingIntegration(
+    level=logging.INFO,        # Capture info and above as breadcrumbs
+    event_level=logging.ERROR  # Send errors as events
+)
 
-# Define a route for the root URL that redirects to the documentation
-@app.route("/")
-def index():
-    return redirect(url_for('docs'))
-# Route for the documentation page
-@app.route("/docs")
-def docs():
-    return render_template("docs.html")
-#Route for the /api/genie page
-@app.route("/api/genie", methods=["GET"])
-def api_genie():
+sentry_sdk.init(
+    dsn="https://16d02ca295c84ada915cdd946946c550@o4505049196986368.ingest.sentry.io/4505049201573888",
+    integrations=[sentry_logging],
+    traces_sample_rate=1.0,
+)
+
+app = FastAPI()
+app.add_middleware(SentryAsgiMiddleware)
+app.exception_handler(SQLAlchemyError)(sqlalchemy_exception_handler)
+# Dependency
+def get_db():
+    db = SessionLocal()
     try:
-        url = request.args.get("url")
-        token = request.args.get("token")
-        
-        if token != my_secret:
-            raise HTTPException("Invalid token", 401)
-        if url is None:
-            raise HTTPException("No data requested", 400)
-        if is_valid_reddit_url(url):
-            playlist = extract_titles(get_comments(url))
-        return {
-            "type": "genie",
-            "timestamp": get_timestamp(),
-            "content": {
-                "name": extract_title(url),
-                "url": url,
-                "playlist": playlist
-            }
-        }
-    except HTTPException as e:
-        # Log the error with the appropriate level (INFO for 404 errors, ERROR for others)
-        if e.code == 404:
-            logger.info(f"API error: {e.description}")
-        else:
-            logger.error(f"API error: {e.description}")
-        # Return the error message as JSON with the appropriate status code
-        return jsonify({
-            "type": "Error",
-            "timestamp": get_timestamp(),
-            "content": e.description
-        }), e.code
-    except Exception as e:
-        # Log the server error with the ERROR level
-        logger.error(f"Server error: {str(e)}")
-        # Return a generic server error message as JSON with a 500 status
-        return jsonify({
-            "type": "Error",
-            "timestamp": get_timestamp(),
-            "content": str(e)
-        }), 500
-# Route for the /api/topten endpoint
-@app.route("/api/topten", methods=["GET"])
-def api_topten():
-    try:
-        # Get the data and token parameters from the request's arguments
-        data = request.args.get("data")
-        token = request.args.get("token")
-        
-        # Check if the token is valid
-        if token != my_secret:
-            raise HTTPException("Invalid token", 401)
-        
-        # Handle the different cases for the data parameter
-        if data is None:
-            raise HTTPException("No data requested", 400)
-        elif data not in service_list:
-            raise HTTPException("Data specified in topten does not exist", 404)
-        # Use the FlixPatrolScraper to get the top ten movies for the specified data
-        with FlixPatrolScraper(service_list) as scraper:
-            list_name = data.replace("-", " ")
-            movie_list = scraper.scrape_top_ten_movies(data)      
-        # Log the successful API call
-        logger.info(f"Successful API call: /api/topten?data={data}&token={token}")
-        # Return the top ten movies as JSON
-        return jsonify({
-            "type": "topten",
-            "timestamp": get_timestamp(),
-            "content": {
-                "name": f"{list_name} topten",
-                "url": "https://flixpatrol.com/top10",
-                "playlist": movie_list
-            }
-        })
-    except HTTPException as e:
-        # Log the error with the appropriate level (INFO for 404 errors, ERROR for others)
-        if e.code == 404:
-            logger.info(f"API error: {e.description}")
-        else:
-            logger.error(f"API error: {e.description}")
-        # Return the error message as JSON with the appropriate status code
-        return jsonify({
-            "type": "Error",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "content": e.description
-        }), e.code
-    except Exception as e:
-        # Log the server error with the ERROR level
-        logger.error(f"Server error: {str(e)}")
-        
-        # Return a generic server error message as JSON with a 500 status
-        return jsonify({
-            "type": "Error",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "content": str(e)
-        }), 500
+        yield db
+    finally:
+        db.close()
 
-# Runs program
+# Allows cors for everyone **Ignore**
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
+
+
+@app.get("/")
+def main():
+    logger.debug("Redirecting to /docs")
+    return RedirectResponse(url="/docs")
+    
+@app.get("/sentry-debug")
+def trigger_error():
+    division_by_zero = 1 / 0
+
+@app.get("/top-movies/{platform_name}", response_model=schemas.PlatformWithMovies, tags=["Movies"])
+def get_top_movies_by_platform(platform_name: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    top_movies = crud.get_top_movies_by_platform(db, platform_name, skip, limit)
+    if not top_movies:
+        raise HTTPException(status_code=404, detail="Platform not found")
+    movies = [top_movie for top_movie in top_movies]
+    print(type(movies))
+    print(movies)
+    return schemas.PlatformWithMovies(platform_name=platform_name, movies=movies, length=len(movies))
+
+@app.get("/top-tv-shows/{platform_name}", response_model=schemas.PlatformWithTVShows, tags=["TV Shows"])
+def get_top_tv_shows_by_platform(platform_name: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    top_tv_shows = crud.get_top_tv_shows_by_platform(db, platform_name, skip, limit)
+    if not top_tv_shows:
+        raise HTTPException(status_code=404, detail="Platform not found")
+    tv_shows = [top_tv_show for top_tv_show in top_tv_shows]
+    print(type(tv_shows))
+    print(tv_shows)
+    return schemas.PlatformWithTVShows(platform_name=platform_name, tv_shows=tv_shows, length=len(tv_shows))
+
+@app.post("/update", status_code=500)
+def update_database(db: Session = Depends(get_db)):
+    try:
+        platforms_data = webscraper.get_all_platforms()
+        crud.update_platforms(db, platforms_data)
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(detail=f"Failed to update the database: {str(e)}")
+    except Exception as e:
+        raise HTTPException(detail=f"Failed to update the database: {str(e)}")
+    else:
+        db.commit()
+        return {"message": "Database updated successfully!"}
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
