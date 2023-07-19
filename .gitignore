@@ -18,5 +18,18 @@ build/
 config.ini
 local_settings.py
 
-# IDE-specific files
+# Cache directories
+.cache/
+.config/
 
+# Replit files
+.replit
+replit.nix
+
+# Poetry files
+poetry.lock
+pyproject.toml
+
+# Other
+.upm
+venv/
