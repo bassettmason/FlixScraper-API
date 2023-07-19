@@ -13,7 +13,7 @@ import logging
 import sentry_sdk
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from sentry_sdk.integrations.logging import LoggingIntegration
-
+import os
 
 # Configure logging and Sentry
 logging.basicConfig(level=logging.DEBUG)
@@ -25,7 +25,7 @@ sentry_logging = LoggingIntegration(
 )
 
 sentry_sdk.init(
-    dsn="https://16d02ca295c84ada915cdd946946c550@o4505049196986368.ingest.sentry.io/4505049201573888",
+    dsn=os.environ['SENTRY_DSN'],
     integrations=[sentry_logging],
     traces_sample_rate=1.0,
 )
